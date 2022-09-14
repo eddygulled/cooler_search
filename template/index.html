@@ -13,8 +13,12 @@
 
 
     <style>
+        .container{
+            overflow-x: scroll;
+        }
         table{
             text-align: left;
+            overflow: scroll;
         }
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -76,16 +80,11 @@
 <body class="d-flex h-100 text-center text-bg-dark">
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-        <header class="mb-auto">
-            <div>
-                <h5 class="float-md-start mb-0">cooler search</h5>
-            </div>
-        </header>
 
         <main class="px-3">
-            <h1>Search by Tag</h1>
+            <h1>Search by Cooler Tag</h1>
             <div class="container">
-                <div class="row">
+                <div class="row mb-5">
                     <form action="" method="POST">
                         {%csrf_token%}
                         <div class="col-12">
@@ -101,65 +100,65 @@
             {%if loaded %}
             <div class="container bg-light rounded">
                 <div class="row mt-5">
-                    <div class="col-sm-12 col-md-6 p-2">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <th>OUTLET NO</th>
-                                        <td>{{outlet_no}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Outlet Name</th>
-                                        <td>{{outlet_name}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Outlet Location</th>
-                                        <td>{{outlet_location}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Mobile Number</th>
-                                        <td>{{mobile_number}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Description Model</th>
-                                        <td>{{description_model}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Cooler tag</th>
-                                        <td>{{cooler_tag}}</td>
-                                    </tr>
-                                </tbody>
-                                
-                            </table>
+                    <div class="col-sm-12 col-md-6 col-12 p-2">
+                        <table class="table col-12">
+                            <tbody>
+                                <tr>
+                                    <th>OUTLET NO</th>
+                                    <td>{{outlet_no}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Outlet Name</th>
+                                    <td>{{outlet_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Outlet Location</th>
+                                    <td>{{outlet_location}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Mobile Number</th>
+                                    <td>{{mobile_number}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Description Model</th>
+                                    <td>{{description_model}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cooler tag</th>
+                                    <td>{{cooler_tag}}</td>
+                                </tr>
+                            </tbody>
+                            
+                        </table>
                     </div>
 
-                    <div class="col-sm-12 col-md-6 p-2">
-                            <table class="table">
-                                <tr>
-                                    <th>Region</th>
-                                    <td>{{region}}</td>
-                                </tr>
-                                <tr>
-                                    <th>RAD Name</th>
-                                    <td>{{rad_name}}</td>
-                                </tr>
-                                <tr>
-                                    <th>ASM name</th>
-                                    <td>{{asm_name}}</td>
-                                </tr>
-                                <tr>
-                                    <th>OCCD Training name</th>
-                                    <td>{{occd_training_name}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Last scanned</th>
-                                    <td>{{last_scanned}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Route Name</th>
-                                    <td>{{route_name}}</td>
-                                </tr>
-                            </table>
+                    <div class="col-sm-12 col-md-6 col-12 p-2">
+                        <table class="table col-12">
+                            <tr>
+                                <th>Region</th>
+                                <td>{{region}}</td>
+                            </tr>
+                            <tr>
+                                <th>RAD Name</th>
+                                <td>{{rad_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>ASM Name</th>
+                                <td>{{asm_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>OCCD Trading Name</th>
+                                <td>{{occd_training_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Last Scanned</th>
+                                <td>{{last_scanned}}</td>
+                            </tr>
+                            <tr>
+                                <th>Route Name</th>
+                                <td>{{route_name}}</td>
+                            </tr>
+                        </table>
                     </div>
 
                 </div>
