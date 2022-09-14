@@ -10,8 +10,11 @@ def search_code(code):
     with file as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            if row['OUTLET NO'] == str(code):
-                return row
+            try:
+                if row['OUTLET NO'] == str(code):
+                    return row
+            except:
+                pass
         
     return None
 
