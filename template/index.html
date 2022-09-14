@@ -83,14 +83,84 @@
             <h1>Search by code</h1>
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
-                        <input type="text" class="col-12 m-3 form-control text-center">
+                    <form action="" method="POST">
+                        {%csrf_token%}
+                        <div class="col-12">
+                            <input type="text" name="cooler_no" class="col-12 my-3 form-control text-center">
+                        </div>
+                        <div class="col-12 d-flex justify-content-center">
+                            <input type="submit" class="btn btn-md btn-light" value="Search">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {%if loaded %}
+            <div class="container">
+                <div class="row mt-5">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card">
+                            <table class="table">
+                                <tr>
+                                    <th>OUTLET NO</th>
+                                    <td>{{outlet_no}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Outlet Name</th>
+                                    <td>{{outlet_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Outlet Location</th>
+                                    <td>{{outlet_location}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Mobile Number</th>
+                                    <td>{{mobile_number}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Description Model</th>
+                                    <td>{{description_model}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cooler tag</th>
+                                    <td>{{cooler_tag}}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <div class="col-12 d-flex justify-content-center">
-                        <div class="btn btn-md btn-light">search</div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card">
+                            <table class="table">
+                                <tr>
+                                    <th>Region</th>
+                                    <td>{{region}}</td>
+                                </tr>
+                                <tr>
+                                    <th>RAD Name</th>
+                                    <td>{{rad_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ASM name</th>
+                                    <td>{{asm_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th>OCCD Training name</th>
+                                    <td>{{occd_training_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Last scanned</th>
+                                    <td>{{last_scanned}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Route Name</th>
+                                    <td>{{route_name}}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+            {%endif%}
         </main>
     </div>
 
