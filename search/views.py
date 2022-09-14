@@ -6,7 +6,7 @@ import csv
 
 def search_code(code):
     file_path = os.path.join(BASE_DIR, 'search/coolerdata.csv')
-    file = open(file_path)
+    file = open(file_path, 'r', encoding='utf-8', errors='ignore')
     with file as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
