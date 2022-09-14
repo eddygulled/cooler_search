@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 import os, json
 from freezer.settings import BASE_DIR
 
@@ -17,6 +18,14 @@ def search_code(code):
                 pass
         
     return None
+
+def record_data(request, tag, long, lat):
+    file_path = os.path.join(BASE_DIR, 'search/geocoordinates.csv')
+    data = [tag, long, lat]
+    file = open(file_path, 'a')
+    writer = csv.writer(file)
+    writer.writerow(data)
+    return JsonResponse({'status': 200})
 
 # Create your views here.
 def search_view(request):
