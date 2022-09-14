@@ -13,6 +13,9 @@
 
 
     <style>
+        table{
+            text-align: left;
+        }
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -75,12 +78,12 @@
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-start mb-0">Cooler Search</h3>
+                <h5 class="float-md-start mb-0">cooler search</h5>
             </div>
         </header>
 
         <main class="px-3">
-            <h1>Search by code</h1>
+            <h1>Search by Tag</h1>
             <div class="container">
                 <div class="row">
                     <form action="" method="POST">
@@ -98,38 +101,41 @@
             {%if loaded %}
             <div class="container">
                 <div class="row mt-5">
-                    <div class="col-sm-12 col-md-6">
-                        <div class="card">
+                    <div class="col-sm-12 col-md-6 p-2">
+                        <div class="card m-2">
                             <table class="table">
-                                <tr>
-                                    <th>OUTLET NO</th>
-                                    <td>{{outlet_no}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Outlet Name</th>
-                                    <td>{{outlet_name}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Outlet Location</th>
-                                    <td>{{outlet_location}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Mobile Number</th>
-                                    <td>{{mobile_number}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Description Model</th>
-                                    <td>{{description_model}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Cooler tag</th>
-                                    <td>{{cooler_tag}}</td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <th>OUTLET NO</th>
+                                        <td>{{outlet_no}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Outlet Name</th>
+                                        <td>{{outlet_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Outlet Location</th>
+                                        <td>{{outlet_location}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Mobile Number</th>
+                                        <td>{{mobile_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Description Model</th>
+                                        <td>{{description_model}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cooler tag</th>
+                                        <td>{{cooler_tag}}</td>
+                                    </tr>
+                                </tbody>
+                                
                             </table>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div class="card">
+                    <div class="col-sm-12 col-md-6 p-2">
+                        <div class="card m-2">
                             <table class="table">
                                 <tr>
                                     <th>Region</th>
