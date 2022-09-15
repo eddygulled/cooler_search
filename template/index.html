@@ -78,7 +78,7 @@
 <body class="d-flex h-100 text-center text-bg-dark">
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-
+        <h3 class="text-danger">{{msg}}</h3>
         <main class="px-3">
             <h1>Search by Cooler Tag</h1>
             <div class="container">
@@ -160,6 +160,7 @@
                     </div>
 
                 </div>
+                {%if map%}
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -169,12 +170,13 @@
                             <div class="card-body">
                                 <iframe class="col-12" height="320" frameborder="0" scrolling="no" marginheight="0"
                                     marginwidth="0"
-                                    src="https://maps.google.com/maps?q=-6.88984,39.281590&hl=es&z=14&amp;output=embed">
+                                    src="https://maps.google.com/maps?q={{lat}},{{lon}}&hl=es&z=14&amp;output=embed">
                                 </iframe>
                             </div>
                         </div>
                     </div>
                 </div>
+                {%endif%}
             </div>
             {%endif%}
         </main>
