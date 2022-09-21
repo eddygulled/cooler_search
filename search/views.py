@@ -6,13 +6,13 @@ from freezer.settings import BASE_DIR
 import csv
 
 def search_code(code):
-    file_path = os.path.join(BASE_DIR, 'search/coolerdata.csv')
+    file_path = os.path.join(BASE_DIR, 'search/master_data_september_2022.csv')
     file = open(file_path, 'r', encoding='utf-8', errors='ignore')
     with file as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
-                if row['COOLER TAG'] == str(code):
+                if row['COOLER TAG'] == str(code) or row['OUTLETTAG'] == str(code):
                     return row
             except:
                 pass
