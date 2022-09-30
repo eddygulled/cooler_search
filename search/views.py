@@ -6,13 +6,13 @@ from freezer.settings import BASE_DIR
 import csv
 
 def search_code(code):
-    file_path = os.path.join(BASE_DIR, 'search/master_data_september_2022.csv')
+    file_path = os.path.join(BASE_DIR, 'search/master_data_28_09.csv')
     file = open(file_path, 'r', encoding='utf-8', errors='ignore')
     with file as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
-                if row['COOLER TAG'] == str(code) or row['OUTLETTAG'] == str(code):
+                if row['COOLER TAG'] == str(code) or row['OUTLET TAG'] == str(code):
                     return row
             except:
                 pass
@@ -48,6 +48,8 @@ def search_view(request):
                 'occd_training_name': data['OCCD TRADING NAME'],
                 'last_scanned': data['LAST SCANNED'],
                 'route_name': data['ROUTE NAME'],
+                'current_location': data['CURRENT LOCATION'],
+                'fi_system_status': data['FI System status']
             }
             return render(request, "index.html", context)
         else:
