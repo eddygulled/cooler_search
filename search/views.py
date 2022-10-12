@@ -19,13 +19,6 @@ def search_code(code):
         
     return None
 
-def record_data(request, tag, long, lat):
-    file_path = os.path.join(BASE_DIR, 'search/geocoordinates.csv')
-    data = [tag, long, lat]
-    file = open(file_path, 'a')
-    writer = csv.writer(file)
-    writer.writerow(data)
-    return JsonResponse({'status': 200})
 
 # Create your views here.
 def search_view(request):

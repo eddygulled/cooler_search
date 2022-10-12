@@ -196,26 +196,6 @@
         crossorigin="anonymous"></script>
     <script src="https://releases.jquery.com/git/jquery-3.x-git.js"></script>
 
-    <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
-            }
-        }
-
-        function showPosition(position) {
-            var url = "{{cooler_tag}}/" + position.coords.longitude + "/" + position.coords.latitude
-            $.get(url, (data, status) => {
-                console.log("Data sent")
-            })
-        }
-
-        $(document).ready(function(){
-            getLocation()
-        })
-    </script>
 </body>
 
 </html>
