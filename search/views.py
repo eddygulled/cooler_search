@@ -6,7 +6,7 @@ from freezer.settings import BASE_DIR
 import csv
 
 def search_code(code):
-    file_path = os.path.join(BASE_DIR, 'search/master_data_11_10_2022.csv')
+    file_path = os.path.join(BASE_DIR, 'search/master_data_25_10_2022.csv')
     file = open(file_path, 'r', encoding='utf-8', errors='ignore')
     with file as csvfile:
         reader = csv.DictReader(csvfile)
