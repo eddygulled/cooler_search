@@ -91,7 +91,7 @@ def cooler_verification(request, time_jump, center):
                         "last_scanned": scan_date,
                         "outlet_number": row['OUTLET NO'],
                         "outlet_name": row['CURRENT OUTLET NAME'],
-                        "mobile_number": row['CURRENT MOBILE\\TEL NO'],
+                        "mobile_number": row['CURRENT MOBILE\TEL NO'],
                         "outlet_location": row['CURRENT LOCATION']
                     }
                     row_list.append(geometry)
