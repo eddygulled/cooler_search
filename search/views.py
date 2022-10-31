@@ -82,7 +82,7 @@ def cooler_verification(request, time_jump, center):
 
                 last_scanned = datetime.datetime.strptime(last_scanned, '%Y-%m-%d')
 
-                if last_scanned < date_jump and row['Lat'] != "#N/A" and row['Long'] != "#N/A":
+                if last_scanned < date_jump:
                     geometry = {
                         "latitude": row['Lat'],
                         "longitude": row['Long'],
@@ -94,6 +94,10 @@ def cooler_verification(request, time_jump, center):
                         "mobile_number": row['CURRENT MOBILE\TEL NO'],
                         "outlet_location": row['CURRENT LOCATION']
                     }
+                    if row['Lat'] != "#N/A" or row['Long'] != "#N/A":
+                        geometry['latitude'] = 0
+                        geometry['longitude'] = 0
+                        
                     row_list.append(geometry)
                 else:
                     # target ahead of date
