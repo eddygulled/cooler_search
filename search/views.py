@@ -1,12 +1,19 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-import os, json
+import os
+import json
 from freezer.settings import BASE_DIR
 
+import datetime
 import csv
 
+master_file = "search/master_data.csv"
+
+def home(request):
+    return render(request, "home.html")
+
 def search_code(code):
-    file_path = os.path.join(BASE_DIR, 'search/master_data_25_10_2022.csv')
+    file_path = os.path.join(BASE_DIR, 'search/master_data.csv')
     file = open(file_path, 'r', encoding='utf-8', errors='ignore')
     with file as csvfile:
         reader = csv.DictReader(csvfile)
@@ -16,7 +23,7 @@ def search_code(code):
                     return row
             except:
                 pass
-        
+
     return None
 
 
@@ -25,7 +32,7 @@ def search_view(request):
     if request.POST:
         code_post = request.POST['cooler_no']
         data = search_code(code_post)
-        if   data is not None:
+        if data is not None:
             context = {
                 'loaded': True,
                 'map': False,
@@ -47,6 +54,61 @@ def search_view(request):
             return render(request, "index.html", context)
         else:
             print("not found")
-            return render(request, "index.html", {'msg': 'nothing Found'}) 
+            return render(request, "index.html", {'msg': 'nothing Found'})
 
     return render(request, "index.html")
+
+
+def cooler_verification(request, time_jump, center):
+    # ***
+    time_jump = time_jump
+    center = center
+    # ***
+    date_jump = datetime.datetime.today() - datetime.timedelta(weeks=time_jump)
+    row_list = []
+    file_path = os.path.join(BASE_DIR, 'search/master_data.csv')
+    file = open(file_path, 'r', encoding='utf-8', errors='ignore')
+    with file as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            try:
+                # date
+                last_scanned = row['LAST SCANNED']
+                scan_date = last_scanned
+                distribution_center = row['OCCD TRADING NAME']
+
+                if center != distribution_center:
+                    continue
+
+                last_scanned = datetime.datetime.strptime(last_scanned, '%Y-%m-%d')
+
+                if last_scanned < date_jump and row['Lat'] != "#N/A" and row['Long'] != "#N/A":
+                    geometry = {
+                        "latitude": row['Lat'],
+                        "longitude": row['Long'],
+                        "rad": row['RAD NAME'],
+                        "asm": row['ASM NAME'],
+                        "last_scanned": scan_date,
+                        "outlet_number": row['OUTLET NO'],
+                        "outlet_name": row['CURRENT OUTLET NAME'],
+                        "mobile_number": row['CURRENT MOBILE\\TEL NO'],
+                        "outlet_location": row['CURRENT LOCATION']
+                    }
+                    row_list.append(geometry)
+                else:
+                    # target ahead of date
+                    pass
+            except:
+                pass
+
+    data = json.dumps(row_list)
+    context = {
+        "row_list": data
+    }
+
+    return render(request, "cooler_verification.html", context)
+
+
+def cooler_verification_blank(request):
+    
+    return render(request, "cooler_verification.html")
