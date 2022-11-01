@@ -236,6 +236,8 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return redirect("/upload")
+        else:
+            return redirect("/login")
     else:
         return render(request, "login.html")
 
