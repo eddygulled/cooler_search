@@ -11,4 +11,5 @@ urlpatterns = [
     path('error/', error, name='error'),
     path('login/', login_view, name='login'),
     path('activate/<int:file_id>/', activate_file, name='activate'),
+    
 ]

@@ -3,3 +3,4 @@ search/geocoordinates.csv
 search/__pycache__/views.cpython-310.pyc
 db.sqlite3
 media/*
+db.sqlite3

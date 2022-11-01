@@ -70,9 +70,9 @@
                     <td>{{upload}}</td>
                     <td>{{upload.active}}</td>
                     <td>{% if upload.active %}
-                        <a href="/activate/{{upload.id}}" class="text-success">Reactivate</a>
+                        <a href="{% url 'activate' upload.id %}" class="text-success">Reactivate</a>
                         {% else %}
-                        <a href="/activate/{{upload.id}}" class="text-danger">activate</a>
+                        <a href="{% url 'activate' upload.id %}" class="text-danger">Revive</a>
                         {% endif %}
                     </td>
                 </tr>
