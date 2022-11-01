@@ -61,6 +61,7 @@
                     <th>Upload Date</th>
                     <th>File</th>
                     <th>Active</th>
+                    <th>Action</th>
                 </tr>
                 {% for upload in uploads %}
                 <tr>
@@ -68,6 +69,12 @@
                     <td width="40%">{{upload.file_date}}</td>
                     <td>{{upload}}</td>
                     <td>{{upload.active}}</td>
+                    <td>{% if upload.active %}
+                        <a href="/activate/{{upload.id}}" class="text-success">Reactivate</a>
+                        {% else %}
+                        <a href="/activate/{{upload.id}}" class="text-danger">activate</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </table>

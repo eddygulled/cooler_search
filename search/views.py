@@ -238,3 +238,15 @@ def login_view(request):
             return redirect("/upload")
     else:
         return render(request, "login.html")
+
+
+def activate_file(request, file_id):
+    if request.user.is_authenticated is not True:
+        return redirect("/login")
+    # deactivate other files
+    MasterDataFile.objects.all().update(active=False)
+    # activate file
+    file = MasterDataFile.objects.get(id=file_id)
+    file.active = True
+    file.save()
+    return redirect("/upload")
