@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import home, search_view, cooler_verification,rad_cooler_verification, cooler_verification_blank, upload_file, error, login_view,activate_file
+from .views import home, search_view, cooler_verification,rad_cooler_verification, cooler_verification_blank, upload_file, error, login_view,activate_file_view
 
 urlpatterns = [
     path('', home),
-    path('activate/<int:file_id>/', activate_file, name='activate_file'),
+    path('activate/<int:file_id>/', activate_file_view, name='activate_file'),
     path('ici/', search_view, name='ici'),
     path('cvm/', cooler_verification_blank, name='cvm'),
     path('cvm/<int:time_jump>/<str:center>', cooler_verification),

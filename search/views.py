@@ -242,7 +242,7 @@ def login_view(request):
         return render(request, "login.html")
 
 
-def activate_file(request, file_id):
+def activate_file_view(request, file_id):
     if request.user.is_authenticated is not True:
         return redirect("/login")
     # deactivate other files
