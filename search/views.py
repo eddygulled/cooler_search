@@ -1,19 +1,34 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.contrib.auth import authenticate, login
+
 import os
 import json
-from freezer.settings import BASE_DIR
+from freezer.settings import BASE_DIR, MEDIA_ROOT
+from .forms import MasterDataFileForm
+from .models import MasterDataFile
+
 
 import datetime
 import csv
 
-master_file = "search/master_data.csv"
+def get_recent_uploaded():
+    uploads = MasterDataFile.objects.filter(active = True).order_by('-id')
+    if uploads:
+        return uploads[0]
+    else:
+        return None
+
 
 def home(request):
     return render(request, "home.html")
 
 def search_code(code):
-    file_path = os.path.join(BASE_DIR, 'search/master_data.csv')
+    target_file = get_recent_uploaded()
+    if target_file is None:
+        return False
+    file_path = os.path.join(BASE_DIR, "media/"+target_file.filename())
+
     file = open(file_path, 'r', encoding='utf-8', errors='ignore')
     with file as csvfile:
         reader = csv.DictReader(csvfile)
@@ -32,6 +47,9 @@ def search_view(request):
     if request.POST:
         code_post = request.POST['cooler_no']
         data = search_code(code_post)
+        if data is False:
+            return redirect("/error")
+
         if data is not None:
             context = {
                 'loaded': True,
@@ -66,7 +84,13 @@ def cooler_verification(request, time_jump, center):
     # ***
     date_jump = datetime.datetime.today() - datetime.timedelta(weeks=time_jump)
     row_list = []
-    file_path = os.path.join(BASE_DIR, 'search/master_data.csv')
+
+    target_file = get_recent_uploaded()
+    if target_file is None:
+        return redirect("/error")
+
+    file_path = os.path.join(BASE_DIR, "media/"+target_file.filename())
+
     file = open(file_path, 'r', encoding='utf-8', errors='ignore')
     with file as csvfile:
         reader = csv.DictReader(csvfile)
@@ -76,6 +100,7 @@ def cooler_verification(request, time_jump, center):
                 last_scanned = row['LAST SCANNED']
                 scan_date = last_scanned
                 distribution_center = row['OCCD TRADING NAME']
+                rad_name = row['RAD NAME']
 
                 if center != distribution_center:
                     continue
@@ -83,9 +108,13 @@ def cooler_verification(request, time_jump, center):
                 last_scanned = datetime.datetime.strptime(last_scanned, '%Y-%m-%d')
 
                 if last_scanned < date_jump:
+                    
+                    lat = row['Lat']
+                    longs = row['Long']
+
                     geometry = {
-                        "latitude": row['Lat'],
-                        "longitude": row['Long'],
+                        "latitude": lat,
+                        "longitude": longs,
                         "rad": row['RAD NAME'],
                         "asm": row['ASM NAME'],
                         "last_scanned": scan_date,
@@ -94,9 +123,69 @@ def cooler_verification(request, time_jump, center):
                         "mobile_number": row['CURRENT MOBILE\TEL NO'],
                         "outlet_location": row['CURRENT LOCATION']
                     }
-                    if row['Lat'] != "#N/A" or row['Long'] != "#N/A":
-                        geometry['latitude'] = 0
-                        geometry['longitude'] = 0
+                    
+                        
+                    row_list.append(geometry)
+                else:
+                    # target ahead of date
+                    pass
+            except:
+                pass
+
+    data = json.dumps(row_list)
+    context = {
+        "row_list": data
+    }
+
+    return render(request, "cooler_verification.html", context)
+
+def rad_cooler_verification(request, time_jump, center):
+    # ***
+    time_jump = time_jump
+    center = center
+    # ***
+    date_jump = datetime.datetime.today() - datetime.timedelta(weeks=time_jump)
+    row_list = []
+
+    target_file = get_recent_uploaded()
+    if target_file is None:
+        return redirect("/error")
+
+    file_path = os.path.join(BASE_DIR, "media/"+target_file.filename())
+
+    file = open(file_path, 'r', encoding='utf-8', errors='ignore')
+    with file as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            try:
+                # date
+                last_scanned = row['LAST SCANNED']
+                scan_date = last_scanned
+                distribution_center = row['OCCD TRADING NAME']
+                rad_name = row['RAD NAME']
+
+                if center != rad_name:
+                    continue
+
+                last_scanned = datetime.datetime.strptime(last_scanned, '%Y-%m-%d')
+
+                if last_scanned < date_jump:
+                    
+                    lat = row['Lat']
+                    longs = row['Long']
+
+                    geometry = {
+                        "latitude": lat,
+                        "longitude": longs,
+                        "rad": row['RAD NAME'],
+                        "asm": row['ASM NAME'],
+                        "last_scanned": scan_date,
+                        "outlet_number": row['OUTLET NO'],
+                        "outlet_name": row['CURRENT OUTLET NAME'],
+                        "mobile_number": row['CURRENT MOBILE\TEL NO'],
+                        "outlet_location": row['CURRENT LOCATION']
+                    }
+                    
                         
                     row_list.append(geometry)
                 else:
@@ -116,3 +205,36 @@ def cooler_verification(request, time_jump, center):
 def cooler_verification_blank(request):
     
     return render(request, "cooler_verification.html")
+
+def error(request):
+    
+    return render(request, "error.html")
+
+
+def upload_file(request):
+    if request.user.is_authenticated is not True:
+        return redirect("/login")
+
+    if request.method == 'POST':
+        form = MasterDataFileForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("/upload")
+    else:
+        uploads = MasterDataFile.objects.all().order_by('-id')
+        form = MasterDataFileForm()
+    return render(request, "upload.html", {'form': form, 'uploads': uploads})
+
+
+def login_view(request):
+    if request.POST:
+        _user_name = request.POST['username']
+        _password = request.POST['password']
+
+        user = authenticate(username=_user_name, password=_password)
+
+        if user is not None:
+            login(request, user)
+            return redirect("/upload")
+    else:
+        return render(request, "login.html")

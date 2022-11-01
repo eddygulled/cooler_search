@@ -10,6 +10,8 @@
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 </head>
 <style>
     .mapboxgl-marker .mapboxgl-marker-anchor-center {
@@ -31,11 +33,11 @@
 <body>
     <div class="container-fluid bg-light p-3">
         <div class="row">
-            <div class="col-3">
+            <div class="col-4">
                 <a class="navbar-brand" href="#">Cooler Verification Mapping</a>
             </div>
-            <div class="col-sm-12 col-md-4 my-1">
-                <select name="" id="time_jump" class="form-control mr-sm-2">
+            <div class="col-sm-12 col-md-4">
+                <select name="" id="time_jump" class="form-control mr-sm-2 m-1">
                     <option value="0">Last Scanned</option>
 
                     <option value="1">past 1 week</option>
@@ -46,8 +48,8 @@
                 </select>
 
             </div>
-            <div class="col-sm-12 col-lg-4 mb-1">
-                <select name="" id="center" class="form-control mr-sm-2">
+            <div class="col-sm-12 col-md-4">
+                <select name="" id="center" class="form-control mr-sm-2 m-1">
                     <option value="0">Branch</option>
                     <option value='KIMARO TRADERS KD'>KIMARO TRADERS KD</option>
                     <option value='MAKETE OCCD'>MAKETE OCCD</option>
@@ -151,9 +153,14 @@
                     <option value='TEMEKE SSD RETAIL'>TEMEKE SSD RETAIL</option>
 
                 </select>
+
+                <input type="text" id="rad_name" class="form-control mr-sm-2 m-1" placeholder="Sales REP"
+                    style="display: none;">
             </div>
-            <div class="col-sm-12 col-lg-1">
-                <span class="form-control btn btn-light" id="filter">search</span>
+
+            <div class="col-sm-12">
+                <span class="btn m-1 bg-white" id="input_toggle">sales rep</span>
+                <button class="btn m-1 bg-white" id="filter">load</button>
             </div>
         </div>
     </div>
@@ -172,32 +179,76 @@
     integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
     crossorigin="anonymous"></script>
 <script src="https://releases.jquery.com/git/jquery-3.x-git.js"></script>
-
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 <script>
+    // init sales reps names
+    const RAD_NAMES = ["ALEX JACKSON MICHAEL", "BENJAMIN JOSEPH SHILINGO", "DIXON ALEX KOMBE", "MOHAMED SAID KIGEDELE", "SALUM MOHAMED MANGALA", "NGEREZA RAMADHANI NGEREZA", "OMARY ADAM MSAKATI", "JUMANNE ISSA NAVALI", "GIDEON ELIETH", "DOTO MAKELEMO MOSES", "AUGUSTINO ALPHONCE MASSAE", "VIOLETH MOSES MWAISELO", "AUGUSTINE BENNET KAKOROZYA", "BEATRICE PIUS NCHIMBI (VACANT)", "RAMADHAN HALFAN MILANZI", "GLORY PANCRAS TESHA", "BENSON SOSPETER KIBONYE", "TUMUHEREZE JULIUS MUGISHA", "KEVIN EBENEZER MUNUO", "OTHMAN OMAR ABDALLAH", "JOSEPH MBOTWA", "PAUL ERNEST ALAME", "ANITHA CYPRIAN NDIBALEMA", "ELINARA JOHNSON MPUTA", "GEORGE AIDANI NDUNGURU", "JOYCE PHILEMON MATIKO", "SYLVESTER MASEGEDO CLEMENT", "NSAJIGWA SWEBE MWAKIBIBI", "BENJAMIN ADAMSON MASIKA", "REVOCATUS MAYALA MAKELEMO", "EVANCE BAZILI TUMAINI", "SCOLA MWANDANJI ABRAHAMU", "HELENA JULIUS KITOLO", "BRIGHT GODBLESS KIMARO", "FATMA HAFIDH NASSOR", "LIDYA JONAS LUKUMAY (VACANT)", "STEVEN KAHEPA", "TEMEKE SSD RETAIL (VACANT)", "BENEDICT JOSEPH MMBANDO", "PASCAZIA JOHN MANG'ULA", "FLORA KAJUNGU MAYONGA", "IPYANA JOHN MWAKIFUNA", "JOHN MALUNGU", "DAVID ALLY KALINGA", "OFORO JUSTIN MOSHI", "KIBO EMPIRE OCCD(VACANT)", "SAID ATHUMAN MATOLA", "REHEMA IBRAHIM  NAWAB", "JANETH PETER MWAKASEKELE", "PENDO LEONARD KIWIA", "HOSEA WILIAM KIYOLA", "IDRISA FADHIL HASSAN", "FRANCIS ALEXANDER DAGAA", "SAMWEL KIRUVUKO MCHOMVU", "ALOYCE BONIFACE MKWAMA", "GRAY ROBERT SINDO", "ADELGORTH OTMARY LUPINDU", "TABU ALLY JAEKA ", "JACQUELINE LUDOVICK KWELA", "MAGDALENA MAROLI NGOWI", "SALUM HUSSEIN", "ANNA CHARLES CHALINZE", "MUSSA MASHAURI MGATA", "IVON ANTHONY SANGA", "BAKARI MOHAMED BAKARI", "JOSEPHAT MGENDERA", "RAPHAEL JACKSON MWANJOKA", "SARAH MARTIN CHUWA", "ELLEN JAFFU", "SELEMANI MOHAMED CHAWILY", "VALENTINA MASSAWE", "DENIS ALFRED HAULE", "RAPHAEL BINGSON MWANSILE", "JOYCE MHINA SETEBE", "SIFA SAID SALUM(VACANT)", "SAMWEL JOSEPH SAMWEL", "EZEKIEL WILSON MSOMBA", "MORGAN GIVEN SHAYO", "NELSON ANDREW GWAJA ", "BENNY FRED MATENI", "OMARY MUSTAFA KAFUMU", "AMOS BONIPHACE KOLLA(VACANT)", "RHODA JEREMIAH SANGIWA(VACANT)", "MOSES SIMON NTANDU", "MOHAMED SAID SECHAMBO", "LATIFA MOHAMED MBONDE", "MWAJUMA RAMADHANI MBAROUK", "YUSUPH KHAMISI SHABAN", "DISMAS COSMAS VEMA", "ALEX BERNARDI KIBUGA", "ZAFANANA BAKARI MAYENGULA", "ELIJAH JACOB MWAVEYA(VACANT)", "ISAYA SOKOLO", "MAGRETH ROBBINSONY NSEKELA", "ROBERT JACKSON WEGA", "JENIPHA EVARIST NDAKIDEMI", "ALI HASSAN ALI", "FURAHA REVOCATUS KALOMBE", "EDSON PATRICK MLAPONI", "TABATA SSD(VACANT)", "WALTER GABRIEL MINZANI", "KELVIN RICHARD KAHABUKA", "EZEKIEL AMBAKISYE MWAITULO", "PHESTO KENNEDY CHACHA", "ATUPELE SAIMON MWAKABANGA", "EMMANUEL GODFREY MASSEY", "LINUS OSCAR NGOJE", "MASAGA NUNGWANA SIZYA", "HADIJA NASSORO NKONDO", "DANIEL TLUWAI MATIA", "KELVIN TARIMO", "JOSEPH JACOB NGULIGWA", "HASSANI HAMISI OMARI(VACANT)", "DANIEL PROTAS CHALE", "ISRAEL LAITON MWASYALINGA", "BENARD MDENDEMI", "NAFTAL EMANUEL NAFTAL", "ALLY MOHAMED ALLY", "LAURENT JOHN MDONG'ALA", "ADENI MATHIAS KASANGA", "ROJAS CLEVER MWANKWASYA", "LUDOVICK SYLVESTER IGOGO", "ZUWENA ANTHONY MAKURU", "ERICK MARCO FRANK", "BRAYSON WILBARD AKYOO", "LULU PETER MUGA", "WINIFRIDA KISANKO SANGA", "ABDUL EVACATUS MAGONO", "BARAKA SIMON MWAILAKALE", "CHARLES LUCAS MWAYUNGU", "PASCAL JOHN MWINGIRA", "WALTER BELLINGTONE KIWOLI", "JACQUELINE GERALD RIMOY", "EMMANUEL DOTTO NKOBA", "ALI HAJI ALI", "BONIVENTURE REVOCATUS SANGU (VACANT)", "EDGER BENJAMIN LWIWA", "BARAKA MPINGA", "PHILBERT RAPHAEL KATANGA", "BARAKA JACOB MTUI", "CONSOLATA PASCHAL MAYOKOLO", "JUMA RASHID JUMA", "CHRISTOPHER JISTON MTANDALA", "SIMON MAKAYA MTIMBA", "MUHSIN JAFARY BOI", "OMARY SHEGHERE MGONJA", "EVEREST YEKONIA ARON", "HUMPHREY EMMANUEL NIGANYA", "ALI UBWA MDOWE", "FLAVIAN JOSEPH BENKU", "PAUL METHOD MLOKA", "OLIVA MICHAEL MATANILA", "ANDREA FILLINGSON KAYUNI", "DENIS SABINI TEMU", "ABASY MWAIPOSYA", "ZAINABU ADAM MWANSELE", "LAWRENCE JOHN MWAKYONDE", "ALLY MUSTAPHA SAPI", "NENGELALE MCHARO", "MWASI AYOUB MARIJANI", "ALLEN MORIS MDULLA", "VUAI JABIR VUAI", "BRIAN PAUL STAMBULI (VACANT)", "OMARY JUMA NGULULU", "MWAJUMA ABDALLAH SAIDI", "SALUM HAMAD MUHANGA", "APSA ALLY RASHIDI", "HENELICKO BUCHARD MJUNI", "ISABELLA FRED SHAYO", "LUCKNESS EXAUD LYIMO", "JOHN LABAN MGINI", "LUSUNGU JAMES MAPILE", "HAWA RAJAB ALLY", "AMBELE ELIEZA BUGALI", "ERICK FRANCIS RAMADHANI", "SELAPIUS EWALDO NYALUSI", "STEVEN NORBERT STEVEN", "MEMMY GEORGE MAKAME", "ROBERT JOAS MSHANA", "IRENE MARTIN MUSHI", "SABURERE PANJISON ALOYS", "MWANAIDI BASHIRI MRUMA", "AMBAKISYE ELIEZA NGONDYA", "ALI MSELEM MNGWALI", "DUDE MOHAMED HIJA", "ONESMO OSCAR HANTA", "SHOMARI ALLY RAJAB", "KULWA PASCHAL IHOFU", "SALEH MBEGA", "DONALD MATHIAS MAKONDA", "JACOB PRIMIUS KAMGISHA", "ALFRED JAMES MTOI", "OTHMAN FAKI TWAHIR", "JOSEPH AUGUSTINO MLAY (VACANT)", "SADIKI SELEMANI ANZURUNI", "CHRISTA SAMSON NGONYANI", "DICKSON DEUS MWIJAGE", "ABDULRAHMAN DAU HAJI", "FRANK GERWIN MWONJA", "CHRISTINE MWANGOSI"];
+
     var data;
-    try{
+    try {
         data = JSON.parse("{{row_list | escapejs}}")
-    } catch{
+    } catch {
         // ??
     }
 </script>
 
 <script>
+
+    var search_state = 0;
+
+    function input_toggle() {
+        var rad_input = document.getElementById("rad_name");
+        var center_input = document.getElementById("center");
+        if (center_input.style.display === "none") {
+            center_input.style.display = "block";
+            rad_input.style.display = "none";
+            document.getElementById("input_toggle").innerHTML = "Sales Rep";
+            search_state = 0;
+        } else {
+            rad_input.style.display = "block";
+            center_input.style.display = "none";
+            document.getElementById("input_toggle").innerHTML = "Branch";
+            search_state = 1;
+        }
+    }
+
+
+    if (localStorage.getItem("search_state") != null) {
+        search_state = localStorage.getItem("search_state");
+        search_state = parseInt(search_state)
+        if (search_state == 1) {
+            document.getElementById("rad_name").value = localStorage.getItem("center");
+            document.getElementById("rad_name").style.display = "block";
+            document.getElementById("center").style.display = "none";
+            document.getElementById("input_toggle").innerHTML = "Branch";
+        }
+    }
+
+    document.getElementById("input_toggle").onclick = function () {
+        input_toggle();
+    }
+
     var init_center = null;
     var init_time = null;
     // inpect local storage
-    if(localStorage.getItem("center") == undefined){
+    if (localStorage.getItem("center") == undefined) {
 
-    }else{
+    } else {
         init_center = localStorage.getItem("center")
         init_time = localStorage.getItem("time_jump")
     }
-    
+
     var map = null;
     $(document).ready(function () {
+
+        $("#rad_name").autocomplete({
+            source: RAD_NAMES
+        });
+
         // initialize boxes
-        if(init_center != null && init_time != null){
+        if (init_center != null && init_time != null) {
             $("#center").val(init_center)
         }
 
@@ -223,7 +274,11 @@
 
         if (data != undefined) {
             for (var i = 0; i < data.length; i++) {
-                var coordinates = [parseFloat(data[i].longitude), parseFloat(data[i].latitude)]
+                var longs = parseFloat(data[i].longitude);
+                if (longs == NaN || !longs) { long = 0 }
+                var lat = parseFloat(data[i].latitude);
+                if (lat == NaN || !lat) { lat = 0 }
+                var coordinates = [longs, lat]
                 new mapboxgl.Marker({ color: 'red', rotation: 0 })
                     .setLngLat(coordinates)
                     .setPopup(
@@ -257,14 +312,23 @@
         }
     });
 
-    // event triggers
-    $("#filter").on('click', function () {
+    // // event triggers
+    document.getElementById("filter").onclick = function () {
+        console.log("err");
         $_center = $("#center").val();
         $_time_jump = $("#time_jump").val();
 
-        if ($_center != 0 && $_time_jump != 0) { window.location.href = "/cvm/" + $_time_jump + "/" + $_center; localStorage.setItem("center", $_center); localStorage.setItem("time_jump", $_center)}
+        if (search_state == 1) {
+            $_center = $("#rad_name").val();
+            if (($_center != 0 || $center != '') && $_time_jump != 0) { window.location.href = "/cvm/" + $_center + "/" + $_time_jump; localStorage.setItem("center", $_center); localStorage.setItem("time_jump", $_center) }
+            localStorage.setItem("search_state", search_state);
+        } else {
+            localStorage.setItem("search_state", 0);
+            if (($_center != 0 || $center != '') && $_time_jump != 0) { window.location.href = "/cvm/" + $_time_jump + "/" + $_center; localStorage.setItem("center", $_center); localStorage.setItem("time_jump", $_center) }
+        }
 
-    });
+
+    };
 </script>
 
 

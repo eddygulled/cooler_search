@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Cooler</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+
+<style>
+    #header {
+        background: url("https://digitalagencynetwork.com/wp-content/uploads/2020/02/what-you-can-see-from-coca-colas-digital-marketing-strategy.jpg") no-repeat;
+        background-size: 80%;
+        background-position: center;
+        padding: 10px;
+        text-align: center;
+        color: white;
+
+    }
+    a{
+        text-decoration: none;
+        color: white;
+    }
+
+
+    @media screen and (max-width: 320px){
+        .link{
+            width: 100%;
+            margin-top: 3px;
+        }
+    }
+</style>
+
+<body>
+    
+    <div id="header">
+
+    </div>
+    <div class="d-flex justify-content-center alig-item-center my-5">
+        <span class="display-4 ">Oops!</span>
+    </div>
+
+    <div class="d-flex justify-content-center alig-item-center my-5">
+        <p>Error On data Source, Please contact data holder to update or upload data source again</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+    <script src="https://releases.jquery.com/git/jquery-3.x-git.js"></script>
+
+</body>
+
+<script>
+    var height = innerHeight/2
+    $("#header").css({"width": "100%", "height": height+"px", "background-color": "red"});
+</script>
+
+</html>
