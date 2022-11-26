@@ -72,8 +72,9 @@
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
         }
-        main::-webkit-scrollbar{display: none;}
-        
+        main::-webkit-scrollbar{display: none; width:0px; height: 0px; background-color: transparent;}
+        ::-webkit-scrollbar{display: none; width:0px; height: 0px; background-color: transparent;}
+
         #fixed-date{
         position: fixed;
         bottom: 0px;
