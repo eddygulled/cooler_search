@@ -134,7 +134,8 @@ def cooler_verification(request, time_jump, center):
 
     data = json.dumps(row_list)
     context = {
-        "row_list": data
+        "row_list": data,
+        "data_last_update": target_file.file_date
     }
 
     return render(request, "cooler_verification.html", context)
@@ -196,15 +197,20 @@ def rad_cooler_verification(request, time_jump, center):
 
     data = json.dumps(row_list)
     context = {
-        "row_list": data
+        "row_list": data,
+        "data_last_update": target_file.file_date
     }
 
     return render(request, "cooler_verification.html", context)
 
 
 def cooler_verification_blank(request):
-    
-    return render(request, "cooler_verification.html")
+    target_file = get_recent_uploaded()
+    date_time = target_file.file_date.strftime("%d/%m/%Y, %H:%M:%S")
+    context = {
+        "data_last_update": date_time
+    }
+    return render(request, "cooler_verification.html", context)
 
 def error(request):
     

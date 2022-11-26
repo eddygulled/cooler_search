@@ -28,6 +28,15 @@
         text-align: center;
         font-family: 'Open Sans', sans-serif;
     }
+    #fixed-date{
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
+        z-index: 3;
+        padding: 3px;
+        font-family: candara;
+        font-size: 15px;
+    }
 </style>
 
 <body>
@@ -172,6 +181,8 @@
             </div>
         </div>
     </div>
+
+    <div id="fixed-date" class="bg-light text-dark"> {{data_last_update}}</div>
 
 </body>
 
