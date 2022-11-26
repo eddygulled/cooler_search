@@ -44,6 +44,12 @@ def search_code(code):
 
 # Create your views here.
 def search_view(request):
+    target_file = get_recent_uploaded()
+    if target_file is not None:
+        date_time = target_file.file_date.strftime("%d/%m/%Y, %H:%M:%S")
+    else:
+        date_time = "No File Available !"
+
     if request.POST:
         code_post = request.POST['cooler_no']
         data = search_code(code_post)
@@ -54,6 +60,7 @@ def search_view(request):
             context = {
                 'loaded': True,
                 'map': False,
+                "data_last_update": date_time,
                 'outlet_no': data['OUTLET NO'],
                 'outlet_name': data['CURRENT OUTLET NAME'],
                 'outlet_location': data['CURRENT LOCATION'],
@@ -72,9 +79,9 @@ def search_view(request):
             return render(request, "index.html", context)
         else:
             print("not found")
-            return render(request, "index.html", {'msg': 'nothing Found'})
+            return render(request, "index.html", {'msg': 'nothing Found',"data_last_update": date_time})
 
-    return render(request, "index.html")
+    return render(request, "index.html", {"data_last_update": date_time})
 
 
 def cooler_verification(request, time_jump, center):
@@ -198,7 +205,7 @@ def rad_cooler_verification(request, time_jump, center):
     data = json.dumps(row_list)
     context = {
         "row_list": data,
-        "data_last_update": target_file.file_date
+        "data_last_update": target_file.file_date.strftime("%d/%m/%Y, %H:%M:%S")
     }
 
     return render(request, "cooler_verification.html", context)
